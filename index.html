@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Bee77777 السعودية — MiniApp</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root{
+    color-scheme: light dark;
+    --bg:#f4f1ea;
+    --bg-2:#ffffff;
+    --bg-3:#ece7db;
+    --text:#1c1a15;
+    --hint:#6f6a5e;
+    --line:#ddd6c6;
+    --button-bg:#1c1a15;
+    --button-text:#f7d774;
+    --accent-soft:#fdf3d3;
+    --gold:#c9a227;
+    --red:#c1272d;
+    --green:#1e7d4f;
+    --radius:14px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#12100d;
+      --bg-2:#1d1a16;
+      --bg-3:#26221c;
+      --text:#f2ede1;
+      --hint:#a89f8d;
+      --line:#38332a;
+      --button-bg:#f7d774;
+      --button-text:#1c1a15;
+      --accent-soft:#2e2a1c;
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--font);
+    background:var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit}
+  .wrap{max-width:520px;margin:0 auto;padding:0 16px 32px}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    margin:0 -16px;
+    padding:22px 20px 20px;
+    background:#171410;
+    color:#f5efdf;
+    border-bottom:3px solid var(--gold);
+  }
+  .hero-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .flag{font-size:13px;font-weight:700;letter-spacing:.04em;background:#006c35;color:#fff;padding:4px 9px;border-radius:999px}
+  .hero-live{font-size:12px;color:#cbbf9e;display:flex;align-items:center;gap:6px}
+  .dot{width:7px;height:7px;border-radius:50%;background:#3ddc84;display:inline-block}
+  .hero h1{font-size:30px;line-height:1.25;margin:14px 0 6px;font-weight:800;letter-spacing:-.01em}
+  .hero h1 span{color:var(--gold)}
+  .hero p.lead{margin:0;font-size:15px;line-height:1.6;color:#d8d0ba;max-width:42ch}
+  .hero-meta{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+  .chip{font-size:12.5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:6px 10px;border-radius:999px;color:#efe8d2}
+  .hero-note{margin-top:12px;font-size:12.5px;line-height:1.7;color:#b7ad93;background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.22);border-radius:8px;padding:9px 11px}
+  .hero-note b{color:#efe8d2}
+
+  /* ---------- Attribution ---------- */
+  .attr{
+    margin-top:16px;
+    background:var(--bg-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px;
+  }
+  .attr-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .attr h2{font-size:13px;letter-spacing:.02em;color:var(--hint);margin:0;font-weight:700}
+  .attr-status{font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px;white-space:nowrap}
+  .attr-status.ok{background:#e6f4ec;color:#166b3f}
+  .attr-status.none{background:var(--bg-3);color:var(--hint)}
+  @media (prefers-color-scheme: dark){
+    .attr-status.ok{background:#173a28;color:#7fe0ab}
+  }
+  .code-big{
+    margin-top:10px;font-family:var(--mono);font-size:26px;font-weight:700;word-break:break-all;line-height:1.2;
+    direction:ltr;text-align:left;
+  }
+  .attr-grid{margin-top:14px;display:grid;grid-template-columns:.82fr 1.18fr;gap:10px}
+  .attr-item{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+  .attr-item label{display:block;font-size:11px;letter-spacing:.03em;color:var(--hint);margin-bottom:4px;font-weight:700}
+  .attr-item strong{font-size:14px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .attr-item .mono{font-family:var(--mono);font-size:13px;white-space:normal;word-break:break-all;direction:ltr;text-align:left}
+  .attr-note{margin:12px 0 0;font-size:13px;line-height:1.7;color:var(--hint)}
+  .attr-note b{color:var(--text)}
+
+  /* ---------- CTAs ---------- */
+  .cta-stack{margin-top:14px;display:grid;gap:10px}
+  .btn{
+    appearance:none;border:0;cursor:pointer;text-decoration:none;
+    display:flex;align-items:center;justify-content:center;gap:9px;
+    width:100%;padding:15px 16px;border-radius:12px;font-size:16px;font-weight:800;line-height:1.3;text-align:center;
+  }
+  .btn-primary{background:var(--button-bg);color:var(--button-text);box-shadow:0 6px 18px rgba(0,0,0,.18)}
+  .btn-primary:active{transform:translateY(1px)}
+  .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:380px){.btn-row{grid-template-columns:1fr}}
+  .btn-secondary{background:var(--bg-2);color:var(--text);border:1.5px solid var(--text);font-size:14.5px;padding:13px 10px}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--line);font-size:14.5px;padding:13px 10px}
+  .cta-hint{font-size:12.5px;color:var(--hint);text-align:center;margin:2px 0 0;line-height:1.6}
+
+  /* ---------- Sections ---------- */
+  section{margin-top:28px}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px}
+  .sec-head h2{font-size:20px;margin:0;font-weight:800;letter-spacing:-.01em}
+  .sec-head span{font-size:12.5px;color:var(--hint);white-space:nowrap}
+
+  .game{
+    background:var(--bg-2);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:12px;
+  }
+  .game-body{padding:14px 16px 16px}
+  .game-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .game-body h3{margin:0;font-size:18px;font-weight:800}
+  .heat-badge{font-size:12px;font-weight:800;background:var(--accent-soft);border:1px solid var(--gold);color:var(--text);padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .game-body p{margin:8px 0 0;font-size:14px;line-height:1.7;color:var(--hint)}
+  .game-body p b{color:var(--text)}
+  .pending-note{margin-top:10px;font-size:12.5px;line-height:1.7;background:var(--bg);border:1px dashed var(--line);border-radius:8px;padding:9px 11px;color:var(--hint)}
+  .pending-note b{color:var(--text)}
+
+  .pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:380px){.pay-grid{grid-template-columns:1fr}}
+  .pay-card{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .pay-card h3{margin:0 0 4px;font-size:15px}
+  .pay-card p{margin:0;font-size:13.5px;line-height:1.7;color:var(--hint)}
+  .pay-card p b{color:var(--text)}
+
+  .steps{display:grid;gap:10px}
+  .step{display:flex;gap:12px;background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .step-num{flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:var(--text);color:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+  .step h3{margin:2px 0 4px;font-size:15px}
+  .step p{margin:0;font-size:13.5px;line-height:1.7;color:var(--hint)}
+
+  /* ---------- Team / technical ---------- */
+  .panel{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+  .panel h3{margin:0 0 6px;font-size:16px;font-weight:800}
+  .panel p{margin:0 0 10px;font-size:13.5px;line-height:1.7;color:var(--hint)}
+  .panel p b, .panel li b{color:var(--text)}
+  .panel ol,.panel ul{margin:0;padding-inline-start:20px;font-size:13.5px;line-height:1.8;color:var(--hint)}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+  th,td{text-align:start;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5}
+  th{font-size:11px;letter-spacing:.03em;color:var(--hint)}
+  td code, .mono-inline{font-family:var(--mono);font-size:12px;background:var(--bg-3);padding:1px 5px;border-radius:5px;word-break:break-all;direction:ltr;unicode-bidi:embed}
+  tr:last-child td{border-bottom:0}
+  .copy-row{display:flex;gap:8px;align-items:stretch;margin-top:10px;flex-wrap:wrap}
+  .copy-box{
+    flex:1 1 200px;font-family:var(--mono);font-size:12px;line-height:1.5;background:var(--bg);border:1px solid var(--line);
+    border-radius:8px;padding:9px 10px;word-break:break-all;color:var(--text);direction:ltr;text-align:left;
+  }
+  .copy-btn{
+    appearance:none;border:1px solid var(--text);background:var(--text);color:var(--bg);font-weight:700;font-size:13px;
+    padding:9px 14px;border-radius:8px;cursor:pointer;white-space:nowrap
+  }
+  .copy-btn.done{background:var(--green);border-color:var(--green);color:#fff}
+  .checklist{list-style:none;padding:0;margin:0}
+  .checklist li{display:flex;gap:9px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px;line-height:1.7;color:var(--hint)}
+  .checklist li:last-child{border-bottom:0}
+  .checklist li::before{content:"○";flex:0 0 auto;color:var(--hint);font-size:14px;line-height:1.4}
+  .checklist li.done{color:var(--text)}
+  .checklist li.done::before{content:"●";color:var(--green)}
+
+  footer{margin-top:30px;border-top:1px solid var(--line);padding-top:16px;text-align:center}
+  .age{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border:2.5px solid var(--red);border-radius:50%;color:var(--red);font-weight:900;font-size:14px;margin-bottom:8px;background:var(--bg-2)}
+  footer p{margin:4px 0;font-size:12.5px;line-height:1.7;color:var(--hint)}
+  footer p strong{color:var(--text)}
+  .toast{
+    position:fixed;left:50%;bottom:22px;transform:translate(-50%,80px);background:#171410;color:#f7d774;font-size:13.5px;font-weight:700;
+    padding:11px 18px;border-radius:999px;opacity:0;transition:all .25s ease;z-index:50;pointer-events:none;max-width:92vw;text-align:center
+  }
+  .toast.show{transform:translate(-50%,0);opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-top">
+      <span class="flag">🇸🇦 السعودية</span>
+      <span class="hero-live"><span class="dot"></span> MiniApp رسمي · @Bee77777SaudiBot</span>
+    </div>
+    <h1>Bee77777 <span>السعودية</span></h1>
+    <p class="lead" id="greeting">تابع البوت للحصول على أنشطة اليوم والعب بنقرة واحدة.</p>
+    <div class="hero-meta">
+      <span class="chip">⚡ ألعاب سريعة: أقل من دقيقة لكل جولة</span>
+      <span class="chip">🕗 أنشطة يومية · 20:00 (بتوقيت الرياض)</span>
+      <span class="chip">💱 العملة: ريال سعودي (SAR)</span>
+    </div>
+    <div class="hero-note">القيم <b>المؤكدة</b>: الدفع اليومي في <b>20:00 بتوقيت الرياض</b>، الإيداع من <b>55 ريالًا</b>، طرق الدفع <b>USDT و Google Pay و Apple Pay والبطاقات</b>. والقيم <b>المقترحة بانتظار التأكيد</b>: البوت <b>@Bee77777SaudiBot</b> والرمز <b>saudi_ads</b>. لا توجد قناة سعودية بعد (لا Telegram ولا WhatsApp)، ولا توجد ألعاب رائدة مؤكدة — لذلك لا تسمّي هذه الصفحة أي لعبة «الأولى في السعودية» ولا تعرض أي صور ألعاب.</div>
+  </header>
+
+  <!-- ATTRIBUTION -->
+  <div class="attr" id="attrPanel">
+    <div class="attr-head">
+      <h2>مصدرك · التتبع</h2>
+      <span class="attr-status none" id="attrStatus">جارٍ التحقق…</span>
+    </div>
+    <div class="code-big" id="sourceCode">—</div>
+    <div class="attr-grid">
+      <div class="attr-item">
+        <label>الزائر</label>
+        <strong id="visitorName">زائر</strong>
+      </div>
+      <div class="attr-item">
+        <label>أول زيارة</label>
+        <strong class="mono" id="visitTime">—</strong>
+      </div>
+    </div>
+    <p class="attr-note">هذا الرمز جاء مع رابطك (<b>startapp</b>) وهو الرمز الذي يجب أن يتبع تسجيلك وإيداعك الأول. إذا دخلت دون رابط حملة، سيظهر «<b>بدون رمز</b>». تابع البوت بنفس الرمز ليبقى تسجيلك مرتبطًا بهذه الحملة.</p>
+  </div>
+
+  <!-- CTAs -->
+  <div class="cta-stack">
+    <button class="btn btn-primary" id="playBtn" type="button">🎮 العب الآن</button>
+    <div class="btn-row">
+      <button class="btn btn-secondary" id="followBotBtn" type="button">📢 تابع البوت</button>
+      <button class="btn btn-ghost" id="channelBtn" type="button">📣 انضم إلى القناة</button>
+    </div>
+    <p class="cta-hint">متابعة البوت تضيفك إلى قائمته: هكذا تصلك أنشطة اليوم في 20:00 (بتوقيت الرياض) حتى في الأيام التي لا تلعب فيها. القناة السعودية لم تُنشأ بعد — سيتم ربط الزر بها فور إنشائها.</p>
+  </div>
+
+  <!-- GAMES : SITE-WIDE HEAT, NOT A SAUDI TOP 3 -->
+  <section aria-labelledby="gamesTitle">
+    <div class="sec-head">
+      <h2 id="gamesTitle">ألعاب رائجة في الموقع</h2>
+      <span>حرارة الموقع كاملة</span>
+    </div>
+
+    <article class="game">
+      <div class="game-body">
+        <div class="game-top"><h3>freespin</h3><span class="heat-badge">🔥 638 لاعبًا</span></div>
+        <p>لعبة مستقلة من <b>BetFugu</b> — الأعلى حرارة في الموقع كاملًا (مقاس 2026-11-07).</p>
+      </div>
+    </article>
+
+    <article class="game">
+      <div class="game-body">
+        <div class="game-top"><h3>Fortune Gems 2</h3><span class="heat-badge">🔥 308 لاعبين</span></div>
+        <p>من <b>Tada</b> — من أكثر الألعاب لعبًا في الموقع (مقاس 2026-11-07).</p>
+      </div>
+    </article>
+
+    <article class="game">
+      <div class="game-body">
+        <div class="game-top"><h3>Money Coming</h3><span class="heat-badge">🔥 168 لاعبًا</span></div>
+        <p>من <b>Tada</b> — لعبة عجلة الحظ (مقاس 2026-11-07).</p>
+      </div>
+    </article>
+
+    <article class="game">
+      <div class="game-body">
+        <div class="game-top"><h3>Aviator</h3><span class="heat-badge">🔥 166 لاعبًا</span></div>
+        <p>من <b>Spribe</b> — لعبة الطائرة (crash) (مقاس 2026-11-07).</p>
+      </div>
+    </article>
+
+    <article class="game">
+      <div class="game-body">
+        <div class="game-top"><h3>SevenSevenSeven</h3><span class="heat-badge">🔥 154 لاعبًا</span></div>
+        <p>من <b>Tada</b> — سلوت كلاسيكي (مقاس 2026-11-07).</p>
+      </div>
+    </article>
+
+    <article class="game">
+      <div class="game-body">
+        <div class="game-top"><h3>Joker's Jewels</h3><span class="heat-badge">🔥 63 لاعبًا</span></div>
+        <p>من <b>Pragmatic Play</b> (مقاس 2026-11-07).</p>
+      </div>
+    </article>
+
+    <article class="game">
+      <div class="game-body">
+        <div class="game-top"><h3>Fortune Tiger</h3><span class="heat-badge">🔥 46 لاعبًا</span></div>
+        <p>من <b>PG Soft</b> (مقاس 2026-11-07).</p>
+      </div>
+    </article>
+
+    <div class="pending-note">ℹ️ هذه أرقام <b>حرارة الموقع كاملة</b> المقاسة في 2026-11-07، وليست قائمة «أفضل 3 ألعاب في السعودية» — القائمة المحلية ما زالت <b>بانتظار تأكيد KOKO</b> (مسؤول العمليات). لعبة JetX (140 لاعبًا) غير متاحة في هذه المنطقة. لا توجد صور ألعاب في هذه الصفحة: لا توجد لقطات موثّقة من داخل اللعبة للسعودية بعد، ولا تُستخدم صور مولّدة بالذكاء الاصطناعي بدلًا من لقطة حقيقية.</div>
+  </section>
+
+  <!-- PAYMENT -->
+  <section aria-labelledby="payTitle">
+    <div class="sec-head">
+      <h2 id="payTitle">الدفع والإيداع</h2>
+      <span>مؤكد</span>
+    </div>
+    <div class="pay-grid">
+      <div class="pay-card">
+        <h3>💳 طرق الدفع</h3>
+        <p><b>USDT</b> · <b>Google Pay</b> · <b>Apple Pay</b> · <b>بطاقة ائتمانية</b></p>
+      </div>
+      <div class="pay-card">
+        <h3>💰 الإيداع</h3>
+        <p>يبدأ من <b>55 ريالًا سعوديًا (SAR)</b>. الفئات الأخرى بانتظار التأكيد.</p>
+      </div>
+      <div class="pay-card">
+        <h3>💬 خدمة العملاء</h3>
+        <p>خدمة عملاء النظام <b>داخل الموقع</b> — لا يوجد رابط WhatsApp للسعودية.</p>
+      </div>
+      <div class="pay-card">
+        <h3>🕗 الأنشطة اليومية</h3>
+        <p>كل يوم في <b>20:00 بتوقيت الرياض</b> (17:00 UTC).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section aria-labelledby="stepsTitle">
+    <div class="sec-head">
+      <h2 id="stepsTitle">كيف يعمل</h2>
+      <span>أقل من دقيقة</span>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <h3>تابع البوت برمزك</h3>
+          <p>اضغط «تابع البوت»: يفتح @Bee77777SaudiBot بنفس رمز المصدر (<span class="mono-inline" id="stepCode">saudi_ads</span>). اضغط «ابدأ» وأكمل التسجيل في 3 خطوات: <b>السعودية</b> (بلد ثابت) ← <b>معرّف اللعبة</b> (يمكن تخطيه) ← تأكيد <b>18+</b>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <h3>انضم إلى القناة الرسمية</h3>
+          <p>القناة السعودية ستنشر الأخبار والأنشطة الرسمية. البوت يتحقق من اشتراكك في القناة أثناء التسجيل — لكن القناة <b>لم تُنشأ بعد</b>، لذلك يكتمل التسجيل «دون تحقق» الآن، ويبدأ التحقق فور إنشاء القناة وتعيين البوت مشرفًا عليها. لا توجد قناة WhatsApp سعودية بعد أيضًا.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <h3>العب وعُد في أي وقت</h3>
+          <p>ادخل اللعبة من هنا أو من البوت: يبقى البوت في قائمة محادثاتك في Telegram كطريق دخول دائم ثانٍ. كل يوم في 20:00 (بتوقيت الرياض) يرسل البوت نشاط اليوم.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section aria-labelledby="teamTitle">
+    <div class="sec-head">
+      <h2 id="teamTitle">للفريق</h2>
+      <span>الإعداد والتتبع</span>
+    </div>
+
+    <div class="panel">
+      <h3>1 · إنشاء MiniApp في BotFather</h3>
+      <p>هذه الصفحة <b>للسعودية فقط</b> (صفحة واحدة لكل بلد): مستقلة عن الموقع الرئيسي ولا تحتاج أي تعديل في beeplayz.com. فقط سجّلها كتطبيق ويب (Web App) لبوت السعودية والصق عنوانها العام. الاستضافة المقترحة: GitHub Pages، المستودع <b>bee77777-saudi-miniapp</b> ← <span class="mono-inline">https://ethansen0527.github.io/bee77777-saudi-miniapp/</span> (سيُنشأ).</p>
+      <ol>
+        <li>افتح <b>@BotFather</b> في Telegram وأرسل <b><span class="mono-inline">/newapp</span></b>.</li>
+        <li>اختر البوت: <b>@Bee77777SaudiBot</b> (اسم مقترح، يُؤكَّد عند الإنشاء).</li>
+        <li>اكتب العنوان والوصف الذي يطلبه BotFather (بالعربية، للسعودية).</li>
+        <li>عندما يطلب <b>رابط تطبيق الويب (Web App URL)</b>، الصق العنوان العام لهذه الصفحة بعد نشرها.</li>
+        <li>استخدم <b><span class="mono-inline">play</span></b> كـ <b>اسم مختصر (short name)</b>.</li>
+        <li>أكّد. يصبح MiniApp متاحًا على <b>t.me/Bee77777SaudiBot/play</b> ويدعم التتبع مع <b><span class="mono-inline">?startapp=saudi_ads</span></b>.</li>
+      </ol>
+      <div class="copy-row">
+        <div class="copy-box" id="copyShortName">play</div>
+        <button class="copy-btn" type="button" data-copy-target="copyShortName">نسخ</button>
+      </div>
+      <div class="copy-row">
+        <div class="copy-box" id="copyAdLink">https://t.me/Bee77777SaudiBot/play?startapp=saudi_ads</div>
+        <button class="copy-btn" type="button" data-copy-target="copyAdLink">نسخ الرابط</button>
+      </div>
+      <p style="margin-top:10px">يجب أن يحمل الرابط دائمًا <span class="mono-inline">/play</span>: بدونه يفتح التطبيق الرئيسي القديم، وليس هذا MiniApp. نسخ لكل قناة: غيّر الرمز فقط — <span class="mono-inline">https://t.me/Bee77777SaudiBot/play?startapp=saudi_ads_tg</span> لإعلانات Telegram، و<span class="mono-inline">https://t.me/Bee77777SaudiBot/play?startapp=saudi_ads_fb</span> لفيسبوك. قواعد الرمز: حروف وأرقام و<span class="mono-inline">_</span> و<span class="mono-inline">-</span> فقط، بحد أقصى 512 حرفًا في <span class="mono-inline">startapp</span>.</p>
+    </div>
+
+    <div class="panel">
+      <h3>2 · كيف يُقرأ التتبع في هذه الصفحة</h3>
+      <p>عند الفتح، تقرأ الصفحة الرمز بهذا الترتيب: <b>Telegram.WebApp.initDataUnsafe.start_param</b> ← معامل <b>tgWebAppStartParam</b> في الرابط (سلسلة الاستعلام والهاش، بما فيها داخل <b>tgWebAppData</b>). يُتحقق من الرمز (حروف وأرقام و<span class="mono-inline">_</span> و<span class="mono-inline">-</span> فقط؛ بحد أقصى 512)؛ وإذا كان غير صالح أو مفقودًا، يظهر «بدون رمز». زر «تابع البوت» يعيد استخدام نفس الرمز في <span class="mono-inline">?start=&lt;code&gt;</span> عندما يكون طوله 64 حرفًا أو أقل؛ أما الرمز الأطول فيستخدم الرمز القصير <span class="mono-inline">bot</span>، لأن <span class="mono-inline">?start=</span> يقبل 64 حرفًا كحد أقصى.</p>
+      <p><b>البيانات منفصلة لكل بلد:</b> هذه الصفحة لا تخزّن شيئًا. بيانات السعودية تعيش في بوت السعودية (قاعدة مستخدميه الخاصة) وفي جدول السعودية المشترك؛ ولا تُخلط مع بيرو أو غرب أفريقيا أو تشيلي أو غانا أو كينيا، ولكل منها بوت وجدول وصفحة خاصة.</p>
+    </div>
+
+    <div class="panel">
+      <h3>3 · الأحداث التي يجب أن يسجّلها الخادم (backend)</h3>
+      <table>
+        <thead>
+          <tr><th>الحدث</th><th>متى</th><th>الحقول</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>miniapp_open</code></td>
+            <td>كل فتح لـ MiniApp</td>
+            <td>tg_user_id, tg_username, start_param, open_time</td>
+          </tr>
+          <tr>
+            <td><code>register</code></td>
+            <td>اكتمال التسجيل على المنصة</td>
+            <td>ما سبق + game_user_id, register_time</td>
+          </tr>
+          <tr>
+            <td><code>first_deposit</code></td>
+            <td>أول إيداع للمستخدم</td>
+            <td>ما سبق + amount, currency (SAR), deposit_time</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:10px">يجب التحقق من هوية Telegram (<span class="mono-inline">initData</span>) في الخادم عبر تجزئة HMAC-SHA-256 قبل الوثوق بالمستخدم. لا تضع رمز البوت (token) أبدًا في كود هذه الصفحة.</p>
+    </div>
+
+    <div class="panel">
+      <h3>4 · حالة هذا MiniApp</h3>
+      <ul class="checklist">
+        <li class="done">صفحة تطبيق ويب خاصة بالسعودية، دون تعديل beeplayz.com</li>
+        <li class="done">تقرأ start_param / tgWebAppStartParam وتعرضها للزائر</li>
+        <li class="done">زر «تابع البوت» بنفس رمز المصدر</li>
+        <li class="done">زر اللعبة يفتح beeplayz.com (موقع السعودية، وليس bee77777.com)؛ زر القناة يعرض «القناة لم تُنشأ بعد» حتى تُنشأ القناة</li>
+        <li class="done">قسم الألعاب بطاقات نصية فقط بحرارة الموقع كاملة — لا صور ألعاب، ولا صور ذكاء اصطناعي بدلًا من لقطات حقيقية</li>
+        <li>إنشاء البوت @Bee77777SaudiBot في BotFather وتسليم الرمز عبر القناة الآمنة (Ethan)</li>
+        <li>إنشاء المستودع bee77777-saudi-miniapp ونشر الصفحة على GitHub Pages (Ethan)</li>
+        <li>إنشاء قناة TG السعودية (وقناة WhatsApp) وتعيين البوت مشرفًا على القناة، ليصبح التحقق من الاشتراك ممكنًا (Ethan)</li>
+        <li>تأكيد أفضل 3 ألعاب في السعودية، ورموز المكافآت، وفئات SAR، ونص مدخل خدمة العملاء (مسؤول العمليات KOKO)</li>
+        <li>التحقق من الألعاب الرائدة في صفحات معلوماتها داخل اللعبة والتقاط لقطات حقيقية داخل Bee77777</li>
+        <li>تسجيل الخادم لأحداث miniapp_open / register / first_deposit (فريق الموقع)</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <div class="age">18+</div>
+    <p><strong>للبالغين فوق 18 عامًا فقط.</strong></p>
+    <p>العب بمسؤولية. Bee77777 السعودية · البوت الرسمي @Bee77777SaudiBot (مقترح) · القناة ستُنشأ قريبًا · أنشطة يومية في 20:00 (بتوقيت الرياض).</p>
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  var tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+
+  /* ---------- Telegram adaptation ---------- */
+  if (tg) {
+    try { tg.ready(); } catch(e){}
+    try { tg.expand(); } catch(e){}
+    var tp = tg.themeParams || {};
+    var root = document.documentElement.style;
+    if (tp.bg_color) root.setProperty('--bg', tp.bg_color);
+    if (tp.secondary_bg_color) root.setProperty('--bg-2', tp.secondary_bg_color);
+    if (tp.text_color) root.setProperty('--text', tp.text_color);
+    if (tp.hint_color) root.setProperty('--hint', tp.hint_color);
+    if (tp.button_color) root.setProperty('--button-bg', tp.button_color);
+    if (tp.button_text_color) root.setProperty('--button-text', tp.button_text_color);
+    if (tp.colorScheme === 'dark' || tg.colorScheme === 'dark') {
+      root.setProperty('--bg-3', 'rgba(255,255,255,0.08)');
+      root.setProperty('--line', 'rgba(255,255,255,0.14)');
+      root.setProperty('--accent-soft', 'rgba(255,255,255,0.08)');
+    }
+  }
+
+  /* ---------- Attribution parsing ---------- */
+  function sanitize(code){
+    if (!code) return null;
+    code = String(code).trim();
+    if (!/^[A-Za-z0-9_-]{1,512}$/.test(code)) return null;
+    return code;
+  }
+  function fromParams(params){
+    if (!params) return null;
+    var v = params.get('tgWebAppStartParam');
+    if (v) return v;
+    var data = params.get('tgWebAppData');
+    if (data) {
+      try {
+        var inner = new URLSearchParams(data);
+        var sp = inner.get('start_param');
+        if (sp) return sp;
+      } catch(e){}
+    }
+    return null;
+  }
+  function readStartParam(){
+    // 1) Telegram initDataUnsafe
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
+      var s = sanitize(tg.initDataUnsafe.start_param);
+      if (s) return s;
+    }
+    // 2) Query string
+    try {
+      var q = new URLSearchParams(window.location.search);
+      var fromQ = sanitize(fromParams(q));
+      if (fromQ) return fromQ;
+    } catch(e){}
+    // 3) Hash (#tgWebAppData=...&tgWebAppStartParam=...)
+    try {
+      var hash = window.location.hash ? window.location.hash.replace(/^#/, '') : '';
+      if (hash) {
+        var h = new URLSearchParams(hash);
+        var fromH = sanitize(fromParams(h));
+        if (fromH) return fromH;
+      }
+    } catch(e){}
+    return null;
+  }
+
+  var code = readStartParam();
+  var codeLabel = code ? code : 'بدون رمز';
+  var botCode = (code && code.length <= 64) ? code : 'bot';
+
+  /* ---------- Visitor + timestamp ---------- */
+  var visitor = 'زائر';
+  if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+    var u = tg.initDataUnsafe.user;
+    var name = [u.first_name, u.last_name].filter(Boolean).join(' ').trim();
+    if (name) visitor = name;
+    if (u.username) visitor += ' · @' + u.username;
+    if (name) {
+      var g = document.getElementById('greeting');
+      g.textContent = 'مرحبًا، ' + name.split(' ')[0] + '! تابع البوت للحصول على أنشطة اليوم والعب بنقرة واحدة.';
+    }
+  }
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  var now = new Date();
+  var stamp = now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate()) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+
+  document.getElementById('visitorName').textContent = visitor;
+  document.getElementById('visitTime').textContent = stamp;
+  document.getElementById('sourceCode').textContent = codeLabel;
+  document.getElementById('stepCode').textContent = botCode;
+  var statusEl = document.getElementById('attrStatus');
+  if (code) {
+    statusEl.textContent = '✓ تم اكتشاف الرمز';
+    statusEl.className = 'attr-status ok';
+  } else {
+    statusEl.textContent = 'بدون رمز حملة';
+    statusEl.className = 'attr-status none';
+  }
+
+  /* ---------- Link opening (Telegram-aware) ---------- */
+  function openExternal(url){
+    if (tg && typeof tg.openLink === 'function') { tg.openLink(url); return; }
+    window.open(url, '_blank', 'noopener');
+  }
+  function openTelegram(url){
+    if (tg && typeof tg.openTelegramLink === 'function') { tg.openTelegramLink(url); return; }
+    openExternal(url);
+  }
+
+  document.getElementById('playBtn').addEventListener('click', function(){
+    openExternal('https://beeplayz.com/#/');
+  });
+  document.getElementById('followBotBtn').addEventListener('click', function(){
+    openTelegram('https://t.me/Bee77777SaudiBot?start=' + encodeURIComponent(botCode));
+  });
+  // Channel not created yet: the button only shows a notice, it links nowhere.
+  document.getElementById('channelBtn').addEventListener('click', function(){
+    showToast('القناة السعودية لم تُنشأ بعد — ترقّب.');
+  });
+
+  /* ---------- Copy buttons ---------- */
+  var toast = document.getElementById('toast');
+  var toastTimer = null;
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 2200);
+  }
+  function copyText(text, btn){
+    function done(){
+      var old = btn.textContent;
+      btn.textContent = '✓ تم النسخ';
+      btn.classList.add('done');
+      showToast('تم النسخ: ' + (text.length > 42 ? text.slice(0,42) + '…' : text));
+      setTimeout(function(){ btn.textContent = old; btn.classList.remove('done'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(function(){ fallback(); });
+    } else { fallback(); }
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); }
+      catch(e){ showToast('انسخ يدويًا: ' + text); }
+      document.body.removeChild(ta);
+    }
+  }
+  var copyBtns = document.querySelectorAll('[data-copy-target]');
+  for (var i = 0; i < copyBtns.length; i++) {
+    (function(btn){
+      btn.addEventListener('click', function(){
+        var target = document.getElementById(btn.getAttribute('data-copy-target'));
+        if (target) copyText(target.textContent.trim(), btn);
+      });
+    })(copyBtns[i]);
+  }
+})();
+</script>
+</body>
+</html>
